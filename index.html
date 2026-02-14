@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Will You Be My Valentine? 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rose: #ff6b9d;
+            --blush: #ffc1d9;
+            --cream: #fff5f8;
+            --text: #4a2c3d;
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 50%, #ffd4e5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.15;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+            border: 2px solid rgba(255, 193, 217, 0.5);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            color: var(--rose);
+            margin-bottom: 10px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 30px;
+            opacity: 0.8;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .progress {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--blush);
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.completed {
+            background: var(--rose);
+            transform: scale(1.2);
+        }
+
+        .question-container {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .placeholder-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffc1d9 0%, #ff6b9d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 18px;
+            font-size: 1.1rem;
+            font-family: 'Crimson Pro', serif;
+            background: white;
+            border: 2px solid var(--blush);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.25);
+            border-color: var(--rose);
+        }
+
+        .option-btn.wrong {
+            animation: wrongShake 0.5s ease, fadeOut 0.5s ease 0.3s forwards;
+            background: #ffe0e0;
+            border-color: #ff4444;
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(135deg, var(--rose), #ff8fb8);
+            color: white;
+            border-color: var(--rose);
+            animation: correctPulse 0.6s ease;
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: scale(0.8); }
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--rose);
+            min-height: 30px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+        }
+
+        .video-container.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .video-container video {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .valentine-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            z-index: 1001;
+        }
+
+        .valentine-overlay.show {
+            opacity: 1;
+        }
+
+        .valentine-overlay h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.8),
+                         0 0 40px rgba(255, 107, 157, 0.6),
+                         0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 25px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .image-container {
+                height: 250px;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .valentine-overlay h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="heartsBg"></div>
+    
+    <div class="container">
+        <h1>💕 Our Love Story 💕</h1>
+        <p class="subtitle">Can you remember these special moments?</p>
+        
+        <div class="progress" id="progress">
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+        </div>
+
+        <div class="question-container" id="questionContainer">
+            <div class="image-container">
+                <div class="placeholder-image">📸</div>
+            </div>
+            
+            <div class="question-text" id="questionText">
+                When was this photo taken?
+            </div>
+            
+            <div class="options" id="optionsContainer"></div>
+            
+            <div class="feedback-message" id="feedbackMessage"></div>
+        </div>
+    </div>
+
+    <div class="video-container" id="videoContainer">
+        <video id="valentineVideo" playsinline>
+            <source src="soravid.mp4" type="video/mp4">
+        </video>
+        <div class="valentine-overlay" id="valentineOverlay">
+            <h2>💖 Will You Be My Valentine? 💖</h2>
+        </div>
+    </div>
+
+    <script>
+        // Quiz questions - CUSTOMIZE THESE WITH YOUR PHOTOS AND DATES!
+        const questions = [
+            {
+                image: 'images/img1.jpg',
+                question: "When was this photo taken?",
+                options: ["January 14, 2022", "July 24, 2021", "March 14, 2021", "April 14, 2022"],
+                correct: 1,
+                wrongMessages: [
+                    "Not quite, my love! Try again 💕",
+                    "Oops! But I love your guesses 💖",
+                    "So close! Give it another shot 🥰",
+                    "Almost there, sweetie! 💝"
+                ]
+            },
+            {
+                image: 'images/img2.jpg',
+                question: "What about this special moment?",
+                options: ["August 1, 2022", "August 19, 2019", "August 5, 2021", "August 9, 2020"],
+                correct: 2,
+                wrongMessages: [
+                    "Hmm, not this one! You've got this 💗",
+                    "Try again, beautiful! 💕",
+                    "Good try! Keep going 💖",
+                    "So close to my heart! Try once more 💝"
+                ]
+            },
+            {
+                image: 'images/img3.jpg',
+                question: "Do you remember when this happened?",
+                options: ["May 5, 2024", "March 18, 2023", "May 25, 2023", "June 5, 2022"],
+                correct: 1,
+                wrongMessages: [
+                    "Not quite yet! You're doing great 🌹",
+                    "Oopsie! But you look cute thinking 💕",
+                    "Try another one, love! 💖",
+                    "Almost! I believe in you 💗"
+                ]
+            },
+            {
+                image: 'images/img4.jpg',
+                question: "This precious memory was on...",
+                options: ["July 3, 2023", "October 20, 2024", "October 30, 2022", "November 10, 2024"],
+                correct: 0,
+                wrongMessages: [
+                    "Not this time! You're so close 💝",
+                    "Give it another go, sweetness 💕",
+                    "Try again! I know you can do it 💖",
+                    "Almost there, my love! 🥰"
+                ]
+            },
+            {
+                image: 'images/img5.jpg',
+                question: "And this beautiful day was...",
+                options: ["January 28, 2025", "January 28, 2021", "January 28, 2024", "January 28, 2023"],
+                correct: 2,
+                wrongMessages: [
+                    "So close! One more try 💗",
+                    "Not quite! But I love you trying 💕",
+                    "Almost! You're amazing 💖",
+                    "Give it another shot, darling! 💝"
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let wrongAttempts = 0;
+
+        // Create floating hearts
+        function createFloatingHearts() {
+            const heartsBg = document.getElementById('heartsBg');
+            const hearts = ['💕', '💖', '💗', '💝', '💘'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-float';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.animationDuration = (10 + Math.random() * 10) + 's';
+                heartsBg.appendChild(heart);
+            }
+        }
+
+        function loadQuestion(index) {
+            const q = questions[index];
+            const container = document.getElementById('questionContainer');
+            const imageContainer = document.querySelector('.image-container');
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+
+            // Reset
+            wrongAttempts = 0;
+            feedbackMessage.textContent = '';
+            
+            // Fade out
+            container.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Update content
+                if (q.image) {
+                    imageContainer.innerHTML = `<img src="${q.image}" alt="Memory">`;
+                } else {
+                    imageContainer.innerHTML = '<div class="placeholder-image">📸</div>';
+                }
+                
+                questionText.textContent = q.question;
+                
+                // Create options
+                optionsContainer.innerHTML = '';
+                q.options.forEach((option, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option;
+                    btn.onclick = () => checkAnswer(i);
+                    optionsContainer.appendChild(btn);
+                });
+                
+                // Fade in
+                container.style.opacity = '1';
+            }, 300);
+        }
+
+        function checkAnswer(selectedIndex) {
+            const q = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.option-btn');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            
+            // Find the actual button by matching the option text
+            let selectedBtn = null;
+            buttons.forEach((btn, idx) => {
+                if (btn.textContent === q.options[selectedIndex]) {
+                    selectedBtn = btn;
+                }
+            });
+
+            // If button doesn't exist (already removed), do nothing
+            if (!selectedBtn) return;
+
+            if (selectedIndex === q.correct) {
+                // Correct answer!
+                selectedBtn.classList.add('correct');
+                feedbackMessage.textContent = '';
+                
+                // Disable all buttons
+                buttons.forEach(btn => btn.style.pointerEvents = 'none');
+                
+                // Update progress
+                const progressDots = document.querySelectorAll('.progress-dot');
+                progressDots[currentQuestion].classList.add('completed');
+                
+                // Move to next question or finish
+                setTimeout(() => {
+                    if (currentQuestion < questions.length - 1) {
+                        currentQuestion++;
+                        loadQuestion(currentQuestion);
+                    } else {
+                        finishQuiz();
+                    }
+                }, 1500);
+            } else {
+                // Wrong answer
+                selectedBtn.classList.add('wrong');
+                const message = q.wrongMessages[wrongAttempts % q.wrongMessages.length];
+                feedbackMessage.textContent = message;
+                wrongAttempts++;
+                
+                // Remove button after animation
+                setTimeout(() => {
+                    if (selectedBtn && selectedBtn.parentNode) {
+                        selectedBtn.remove();
+                    }
+                }, 800);
+            }
+        }
+
+        function finishQuiz() {
+            const videoContainer = document.getElementById('videoContainer');
+            const video = document.getElementById('valentineVideo');
+            const overlay = document.getElementById('valentineOverlay');
+            
+            setTimeout(() => {
+                videoContainer.classList.add('show');
+                
+                // Try to play the video with sound
+                video.muted = false;
+                video.play().catch(err => {
+                    // If autoplay with sound fails, try muted
+                    console.log('Autoplay with sound failed, playing muted');
+                    video.muted = true;
+                    video.play();
+                });
+                
+                // Show overlay when video ends
+                video.addEventListener('ended', () => {
+                    overlay.classList.add('show');
+                });
+            }, 500);
+        }
+
+        // Initialize
+        createFloatingHearts();
+        loadQuestion(0);
+    </script>
+</body>
+</html>
